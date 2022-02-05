@@ -30,23 +30,30 @@
 
 ;;; Commentary:
 
-;; I never liked the mixed function/command/variable output style of
-;; the original apropos commands in GNU Emacs. This looks more like
-;; the apropos output in XEmacs with separate sections for functions
-;; and variables.
-;;
+;; This is a downsized and more minimalistic alternative to `apropos'.
+;; It was inspired by the (in my opinion nicer looking) apropos buffer
+;; in XEmacs.
+
+;; After providing a regex to `apropos-toc' a result buffer with
+;; separate sections for functions and variables is created.
+;; Pressing return, space or mouse-2 calls up the documentation for
+;; the thing on the current line, q kills the buffer.
+
 ;; apropos-toc.el was implemented with lots of stuff taken from GNU
 ;; Emacs' apropos.el and XEmacs' hyper-apropos.el.
-;;
 
 
 ;;; Installation:
 
-;; Put apropos-toc.el in your load-path and add the following lines to
+;; Put apropos-toc.el in your load-path and add the following line to
 ;; your .emacs:
 
-;; (when (require 'apropos-toc nil 'noerror)
-;;   (global-set-key (kbd "C-h a") #'apropos-toc))
+;; (require 'apropos-toc nil 'noerror)
+
+;; If you want to clobber the standard key binding for `apropos' you
+;; can add:
+
+;; (global-set-key (kbd "C-h a") #'apropos-toc)
 
 
 ;;; Code:
