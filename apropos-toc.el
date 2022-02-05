@@ -56,11 +56,7 @@
   (let ((keymap (make-sparse-keymap)))
     (define-key keymap (kbd "<RET>") #'apropos-toc-doc-this-line)
     (define-key keymap (kbd "<SPC>") #'apropos-toc-doc-this-line)
-    (define-key keymap (kbd "<mouse-2>")
-      #'(lambda ()
-          (interactive)
-          (mouse-set-point last-input-event)
-          (apropos-toc-doc-this-line)))
+    (define-key keymap (kbd "<mouse-2>") #'apropos-toc-doc-this-mousepos)
     (define-key keymap (kbd "q") #'kill-this-buffer)
     keymap)
   "Keymap used in the apropos-toc buffer.")
@@ -140,6 +136,12 @@ as overlay property 'type' for the output lines."
       (if (eq (overlay-get overlay 'type) 'function)
           (describe-function (function-called-at-point))
         (describe-variable (variable-at-point))))))
+
+(defun apropos-toc-doc-this-mousepos ()
+  "Show full documentation for the item at the current mouse position."
+  (interactive)
+  (mouse-set-point last-input-event)
+  (apropos-toc-doc-this-line))
 
 (provide 'apropos-toc)
 ;;; apropos-toc.el ends here
