@@ -89,6 +89,7 @@
 
 (defun apropos-toc-insert-table (table-data row-type)
   "Insert entries in TABLE-DATA into the current buffer.
+
 TABLE-DATA is a list of entries. Every entry is a list of two strings,
 a symbol name and a documentation string. The symbol ROW-TYPE is set
 as overlay property 'type' for the output lines."
@@ -108,13 +109,13 @@ as overlay property 'type' for the output lines."
   "Collect and display documentation lines for function symbols in FUNCS."
   (apropos-toc-insert-table
    (cl-loop for func in funcs collect
-         (let ((doc (condition-case nil
-                        (documentation func t)
-                      (void-function "(alias for undefined function)"))))
-           (setq doc (if doc
-                         (substring doc 0 (string-match "\n" doc))
-                       "(not documented)"))
-           (list (symbol-name func) doc)))
+            (let ((doc (condition-case nil
+                           (documentation func t)
+                         (void-function "(alias for undefined function)"))))
+              (list (symbol-name func)
+                    (if doc
+                        (substring doc 0 (string-match "\n" doc))
+                      "(not documented)"))))
    'function))
 
 (defun apropos-toc-display-variables (vars)
@@ -122,10 +123,10 @@ as overlay property 'type' for the output lines."
   (apropos-toc-insert-table
    (cl-loop for var in vars collect
             (let ((doc (documentation-property var 'variable-documentation t)))
-              (setq doc (if doc
-                            (substring doc 0 (string-match "\n" doc))
-                          "(not documented)"))
-              (list (symbol-name var) doc)))
+              (list (symbol-name var)
+                    (if doc
+                        (substring doc 0 (string-match "\n" doc))
+                      "(not documented)"))))
    'variable))
 
 (defun apropos-toc-doc-this-line ()
