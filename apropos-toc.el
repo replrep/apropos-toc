@@ -52,10 +52,10 @@
 (defvar apropos-toc-buffername "*apropos-toc*"
   "Buffer name for the apropos-toc buffer.")
 
-(defvar apropos-toc-map
+(defvar apropos-toc-mode-map
   (let ((keymap (make-sparse-keymap)))
     (define-key keymap (kbd "<RET>") #'apropos-toc-doc-this-line)
-    (define-key keymap (kbd "<space>") #'apropos-toc-doc-this-line)
+    (define-key keymap (kbd "<SPC>") #'apropos-toc-doc-this-line)
     (define-key keymap (kbd "<mouse-2>")
       #'(lambda ()
           (interactive)
@@ -65,15 +65,16 @@
     keymap)
   "Keymap used in the apropos-toc buffer.")
 
+(defvar apropos-toc-mode-hook nil
+  "Hook run when apropos-toc-mode is turned on in the result buffer.")
+
+(define-derived-mode apropos-toc-mode special-mode "Apropos-toc"
+  "Major mode for following hyperlinks in output of apropos-toc commands.")
+
 (defun apropos-toc (regexp)
   "Show bound symbols whose names match REGEXP."
   (interactive "sapropos-toc (regexp): ")
   (switch-to-buffer (get-buffer-create apropos-toc-buffername))
-  (kill-all-local-variables)
-  (use-local-map apropos-toc-map)
-  (setq major-mode 'apropos-toc-mode)
-  (setq mode-name "apropos-toc")
-  (setq default-directory "/")
   (setq buffer-read-only nil)
   (erase-buffer)
   (let ((flist (apropos-internal regexp #'fboundp))
@@ -84,6 +85,7 @@
     (apropos-toc-display-variables vlist))
   (setq buffer-read-only t)
   (set-buffer-modified-p nil)
+  (apropos-toc-mode)
   (setq truncate-lines t)
   (goto-line 3))
 
