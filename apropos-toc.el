@@ -2,11 +2,15 @@
 
 ;; Copyright (C) 2005-2022 Claus Brunzema <mail@cbrunzema.de>
 
-;; Version 1.1.0
-;; Author: Claus Brunzema
-;; URL: http://www.cbrunzema.de/software.html#apropos-toc
 
-;;; Keywords: documentation
+;; Author: Claus Brunzema <mail@cbrunzema.de>
+;; Homepage: https://github.com/replrep/apropos-toc
+;; or http://www.cbrunzema.de/software.html#apropos-toc
+
+;; Version: 1.1.0
+;; License: GPL-2.0 License
+;; Package-Requires: ((emacs "26.3"))
+;; Keywords: help
 
 ;; apropos-toc.el is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
