@@ -1,0 +1,5 @@
+* apropos-toc
+
+This package provides a downsized alternative to M-x apropos (a.k.a. C-h a).
+Please see the comment section at the top of apropos-toc.el for
+further documentation.
