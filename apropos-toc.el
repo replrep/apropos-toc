@@ -1,8 +1,8 @@
-;;; apropos-toc.el --- xemacs-ish hyper-apropos for GNUEmacs
+;;; apropos-toc.el --- An alternative to M-x apropos -*- lexical-binding: t -*-
 
-;; Copyright (C) 2005-2007 Claus Brunzema <mail@cbrunzema.de>
+;; Copyright (C) 2005-2022 Claus Brunzema <mail@cbrunzema.de>
 
-;; Version 1.0.0
+;; Version 1.1.0
 ;; Author: Claus Brunzema
 ;; URL: http://www.cbrunzema.de/software.html#apropos-toc
 
@@ -46,7 +46,8 @@
 
 
 ;;; Code:
-(require 'cl)
+(require 'apropos)
+(require 'cl-lib)
 
 (defvar apropos-toc-buffername "*apropos-toc*"
   "Buffer name for the apropos-toc buffer.")
@@ -91,12 +92,12 @@
 TABLE-DATA is a list of entries. Every entry is a list of two strings,
 a symbol name and a documentation string. The symbol ROW-TYPE is set
 as overlay property 'type' for the output lines."
-  (let ((max-symbol-len (loop for entry in table-data
-                              maximize (length (first entry)))))
+  (let ((max-symbol-len (cl-loop for entry in table-data
+                                 maximize (length (cl-first entry)))))
     (dolist (entry table-data)
-      (insert (first entry))
-      (insert-char ?\  (1+ (- max-symbol-len (length (first entry)))))
-      (insert (second entry))
+      (insert (cl-first entry))
+      (insert-char ?\  (1+ (- max-symbol-len (length (cl-first entry)))))
+      (insert (cl-second entry))
       (let ((overlay (make-overlay (point-at-bol)
                                    (point-at-eol))))
         (overlay-put overlay 'mouse-face 'highlight)
@@ -106,7 +107,7 @@ as overlay property 'type' for the output lines."
 (defun apropos-toc-display-functions (funcs)
   "Collect and display documentation lines for function symbols in FUNCS."
   (apropos-toc-insert-table
-   (loop for func in funcs collect
+   (cl-loop for func in funcs collect
          (let ((doc (condition-case nil
                         (documentation func t)
                       (void-function "(alias for undefined function)"))))
@@ -119,19 +120,19 @@ as overlay property 'type' for the output lines."
 (defun apropos-toc-display-variables (vars)
   "Collect and display documentation lines for variable symbols in VARS."
   (apropos-toc-insert-table
-   (loop for var in vars collect
-         (let ((doc (documentation-property var 'variable-documentation t)))
-           (setq doc (if doc
-                         (substring doc 0 (string-match "\n" doc))
-                       "(not documented)"))
-           (list (symbol-name var) doc)))
+   (cl-loop for var in vars collect
+            (let ((doc (documentation-property var 'variable-documentation t)))
+              (setq doc (if doc
+                            (substring doc 0 (string-match "\n" doc))
+                          "(not documented)"))
+              (list (symbol-name var) doc)))
    'variable))
 
 (defun apropos-toc-doc-this-line ()
   "Show full documentation for the item on the current line."
   (interactive)
   (beginning-of-line)
-  (let ((overlay (first (overlays-at (point)))))
+  (let ((overlay (cl-first (overlays-at (point)))))
     (when overlay
       (if (eq (overlay-get overlay 'type) 'function)
           (describe-function (function-called-at-point))
@@ -139,4 +140,3 @@ as overlay property 'type' for the output lines."
 
 (provide 'apropos-toc)
 ;;; apropos-toc.el ends here
-
