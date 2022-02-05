@@ -31,12 +31,12 @@
 ;;; Commentary:
 
 ;; I never liked the mixed function/command/variable output style of
-;; the original apropos commands in GNU emacs. This looks more like
+;; the original apropos commands in GNU Emacs. This looks more like
 ;; the apropos output in XEmacs with separate sections for functions
 ;; and variables.
 ;;
 ;; apropos-toc.el was implemented with lots of stuff taken from GNU
-;; emacs' apropos.el and XEmacs' hyper-apropos.el.
+;; Emacs' apropos.el and XEmacs' hyper-apropos.el.
 ;;
 
 
@@ -54,7 +54,7 @@
 (require 'cl-lib)
 
 (defvar apropos-toc-buffername "*apropos-toc*"
-  "Buffer name for the apropos-toc buffer.")
+  "Buffer name for the `apropos-toc' result buffer.")
 
 (defvar apropos-toc-mode-map
   (let ((keymap (make-sparse-keymap)))
@@ -63,13 +63,13 @@
     (define-key keymap (kbd "<mouse-2>") #'apropos-toc-doc-this-mousepos)
     (define-key keymap (kbd "q") #'kill-this-buffer)
     keymap)
-  "Keymap used in the apropos-toc buffer.")
+  "Keymap used in the `apropos-toc' result buffer.")
 
 (defvar apropos-toc-mode-hook nil
-  "Hook run when apropos-toc-mode is turned on in the result buffer.")
+  "Hook run in the `apropos-toc' result buffer.")
 
 (define-derived-mode apropos-toc-mode special-mode "Apropos-toc"
-  "Major mode for following hyperlinks in output of apropos-toc commands.")
+  "Major mode for following hyperlinks in output of `apropos-toc' commands.")
 
 (defun apropos-toc (regexp)
   "Show bound symbols whose names match REGEXP."
