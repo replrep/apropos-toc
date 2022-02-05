@@ -87,7 +87,8 @@
   (set-buffer-modified-p nil)
   (apropos-toc-mode)
   (setq truncate-lines t)
-  (goto-line 3))
+  (goto-char (point-min))
+  (forward-line 3))
 
 (defun apropos-toc-insert-table (table-data row-type)
   "Insert entries in TABLE-DATA into the current buffer.
